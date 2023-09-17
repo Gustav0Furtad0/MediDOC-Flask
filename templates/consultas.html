@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="text-center">Consultas do Médico</h2>
+            
+            <a href="/registrar_consulta" class="btn btn-primary mb-3">Registrar Consulta</a>
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Hora</th>
+                        <th>Paciente</th>
+                        <th>Status</th>
+                        <th>Ação</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in consultas %}
+                    <tr>
+                        <td>{{ consulta.data }}</td>
+                        <td>{{ consulta.hora }}</td>
+                        <td>{{ consulta.paciente.nome }}</td>
+                        <td>{{ consulta.status }}</td>
+                        <td>
+                            <a href="/excluir_consulta/{{ consulta.id }}" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

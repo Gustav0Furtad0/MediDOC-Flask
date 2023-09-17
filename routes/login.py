@@ -1,16 +1,14 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, redirect, session
 from models import Doctor
 from werkzeug.security import check_password_hash
 
 login_bp = Blueprint('login', __name__)
 
-
 @login_bp.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        
-        crm = request.form['crm']
-        senha = request.form['senha']
+        crm = request.form.get('crm')
+        senha = request.form.get('senha')
         
         doctor = Doctor.query.filter_by(crm=crm).first()
         
@@ -20,6 +18,10 @@ def login():
         if not check_password_hash(doctor.senha, senha):
             return render_template('login.html', message='Senha incorreta!'), 400
         
-        return render_template('welcome.html', doctor=doctor)
-    elif request.method == 'GET':
+        session['crm'] = crm
+        session['doctor'] = doctor
+        
+        return redirect('/bemvindo')
+
+    elif request.method == 'GET':   
         return render_template('login.html')

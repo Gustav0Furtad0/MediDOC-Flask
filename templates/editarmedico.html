@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Editar Médico</h2>
+
+            {% if message %}
+            <div class="alert alert-danger text-center">
+                {{ message }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/editarmedico">
+                <div class="form-group mb-4">
+                    <label for="nome_completo">Nome Completo</label>
+                    <input type="text" class="form-control" id="nome_completo" name="nome_completo" required value="{{ doctor.nome_completo }}">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="crm">CRM</label>
+                    <input type="text" class="form-control" id="crm" name="crm" required value="{{ doctor.crm }}">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="data_inscricao_crm">Data de Inscrição no CRM</label>
+                    <input type="date" class="form-control" id="data_inscricao_crm" name="data_inscricao_crm" required value="{{ doctor.data_inscricao_crm }}">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="senha">Nova Senha (opcional)</label>
+                    <input type="password" class="form-control" id="senha" name="senha">
+                </div>
+                <button type="submit" class="btn btn-primary mx-auto mb-4">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

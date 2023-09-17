@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Perfil do Médico</h2>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nome: {{ doctor.nome_completo }}</h4>
+                    <p class="card-text">CPF: {{ doctor.cpf }}</p>
+                    <p class="card-text">CRM: {{ doctor.crm }}</p>
+                    <p class="card-text">Data de Inscrição no CRM: {{ doctor.data_inscricao_crm }}</p>
+
+                    <a href="/editarmedico" class="btn btn-primary">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

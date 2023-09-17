@@ -1,5 +1,7 @@
 venv/
 env/
+.vscode/
+flask_session/
 instance/
 migrations/
 __pycache__/

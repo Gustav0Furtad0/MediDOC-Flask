@@ -17,6 +17,14 @@ class Doctor(db.Model):
         self.cpf = cpf
         self.data_inscricao_crm = data_inscricao_crm
         self.senha = senha
+        
+    def to_dict(self):
+        return {
+            'cpf': self.cpf,
+            'nome_completo': self.nome_completo,
+            'crm': self.crm,
+            'data_inscricao_crm': self.data_inscricao_crm,
+        }
 
 class Patient(db.Model):
     __tablename__ = 'patient'
@@ -24,12 +32,6 @@ class Patient(db.Model):
     nome_completo = db.Column(db.String(255), nullable=False)
     data_nascimento = db.Column(db.Date, nullable=False)
     sexo = db.Column(db.String(1), nullable=False)
-
-    numero = db.Column(db.String(10))
-    complemento = db.Column(db.String(255))
-    cidade = db.Column(db.String(100))
-    estado = db.Column(db.String(50))
-    cep = db.Column(db.String(10))
 
     telefone = db.Column(db.String(20))
     email = db.Column(db.String(255))
@@ -49,21 +51,6 @@ class Patient(db.Model):
         self.telefone = telefone
         self.email = email
 
-class Category(db.Model):
-    __tablename__ = 'category'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nome = db.Column(db.String(255), nullable=False)
-
-    consultacoes = db.relationship('Consultation', secondary='consultation_categories', back_populates='categorias')
-    
-    def __init__(self, nome):
-        self.nome = nome
-    
-    consultation_categories = db.Table('consultation_categories',
-    db.Column('consultation_id', db.Integer, db.ForeignKey('consultation.id'), primary_key=True),
-    db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True)
-)
-
 class Consultation(db.Model):
     __tablename__ = 'consultation'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -73,5 +60,3 @@ class Consultation(db.Model):
     diagnostico = db.Column(db.Text)
     medico_id = db.Column(db.Integer, db.ForeignKey('doctor.cpf'))
     paciente_id = db.Column(db.Integer, db.ForeignKey('patient.cpf'))
-
-    categorias = db.relationship('Category', secondary='consultation_categories', back_populates='consultacoes')

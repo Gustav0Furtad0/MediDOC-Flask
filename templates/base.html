@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <title>MediDOC</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block navbar %}
+        <nav class="navbar text-bg-primary p-3">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1 fs-1 text-light mx-auto">MediDOC</span>
+            </div>
+        </nav>
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% block scripts %}
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+    </body>
+</html>

@@ -2,18 +2,21 @@ from database import db
 
 class Doctor(db.Model):
     __tablename__ = 'doctor'
-    cpf = db.Column(db.String(14), nullable=False, unique=True, primary_key=True)
+    cpf = db.Column(db.Integer, nullable=False, unique=True, primary_key=True)
     nome_completo = db.Column(db.String(255), nullable=False)
-    crm = db.Column(db.String(20), nullable=False, unique=True)
+    crm = db.Column(db.Integer, nullable=False, unique=True)
     data_inscricao_crm = db.Column(db.Date, nullable=False)
+    
+    senha = db.Column(db.String(50), nullable=False)
 
     consultas = db.relationship('Consultation', backref='medico')
     
-    def __init__(self, nome_completo, crm, cpf, data_inscricao_crm):
+    def __init__(self, nome_completo, crm, cpf, data_inscricao_crm, senha):
         self.nome_completo = nome_completo
         self.crm = crm
         self.cpf = cpf
         self.data_inscricao_crm = data_inscricao_crm
+        self.senha = senha
 
 class Patient(db.Model):
     __tablename__ = 'patient'

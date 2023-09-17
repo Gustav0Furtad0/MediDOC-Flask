@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Login do Médico</h2>
+            <form method="POST" action="/login">
+                <div class="form-group mb-4">
+                    <label for="crm">CRM</label>
+                    <input type="text" class="form-control" id="crm" name="crm" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" id="senha" name="senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-4">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

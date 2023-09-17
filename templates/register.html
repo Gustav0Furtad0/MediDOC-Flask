@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center">Registro de Médico</h2>
+            <form method="POST" action="/registro">
+                <div class="form-group mb-3">
+                    <label for="nome_completo">Nome Completo</label>
+                    <input type="text" class="form-control" id="nome_completo" name="nome_completo" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="crm">CRM</label>
+                    <input type="number" class="form-control" id="crm" name="crm" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="cpf">CPF</label>
+                    <input type="number" class="form-control" id="cpf" name="cpf" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="data_inscricao_crm">Data de Inscrição no CRM</label>
+                    <input type="date" class="form-control" id="data_inscricao_crm" name="data_inscricao_crm" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="senha">Senha</label>
+                    <input type="password" class="form-control" id="senha" name="senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

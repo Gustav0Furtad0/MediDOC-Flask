@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_migrate import Migrate
 from database import db
 from flask_bootstrap import Bootstrap5
@@ -13,16 +13,15 @@ bootstrap = Bootstrap5(app)
 db.init_app(app)
 
 # Register blueprints
-from routes.register import register_bp
-from routes.login import login_bp
-
-app.register_blueprint(register_bp)
-app.register_blueprint(login_bp)
+from routes import login, registro, bemVindo
+app.register_blueprint(login.login_bp)
+app.register_blueprint(registro.register_bp)
+app.register_blueprint(bemVindo.bemVindo_bp)
 
 migrate = Migrate(app, db)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return '<h1>Hello Puppy!</h1>'
+    return redirect("/login", code=302)
 
-app.run(debug=True)
+app.run(debug=True, use_reloader=True)

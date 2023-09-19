@@ -8,6 +8,9 @@
                 {{ message }}
             </div>
     {% endif %}
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/pacientes" class="btn btn-danger">Voltar</a>
+    </div>
     <form method="POST" action="/registrarPaciente">
         <div class="form-group mb-3">
             <label for="nome_completo">Nome Completo</label>

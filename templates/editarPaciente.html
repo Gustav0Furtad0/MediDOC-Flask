@@ -4,10 +4,15 @@
 <div class="container mt-5">
     <h2 class="text-center">Editar Paciente</h2>
     {% if message %}
-            <div class="alert alert-danger text-center">
-                {{ message }}
-            </div>
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
     {% endif %}
+    
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/pacientes" class="btn btn-danger">Voltar</a>
+    </div>
+
     <form method="POST" action="/editarPaciente/{{ paciente.cpf }}">
         <div class="form-group mb-3">
             <label for="nome_completo">Nome Completo</label>

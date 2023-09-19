@@ -14,25 +14,27 @@
                         <th>CPF</th>
                         <th>Nome</th>
                         <th>Sexo</th>
-                        <th>Status</th>
                         <th>Ação</th> 
                     </tr>
                 </thead>
                 <tbody>
                     {% for paciente in pacientes %}
                         <tr>
-                            <td>{{ paciente.nome }}</td>
                             <td>{{ paciente.cpf }}</td>
+                            <td>{{ paciente.nome_completo }}</td>
                             <td>{{ paciente.sexo }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" herf="/excluirPaciente/{{ paciente.cpf }}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm" href="/contatoModal/{{ paciente.cpf }}">
+                                <a class="btn btn-primary btn-sm" href="/contatoModal/{{ paciente.cpf }}">
                                     <i class="fas fa-envelope"></i>
-                                </button>
+                                </a>
                                 <a class="btn btn-info btn-sm" href="/prontuario/{{ paciente.cpf }}">
-                                    <i class="fas fa-eye"></i>
+                                    <i class="fas fa-book"></i>
+                                </a>
+                                <a class="btn btn-warning btn-sm" href="/editarPaciente/{{ paciente.cpf }}">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="/excluirPaciente/{{ paciente.cpf }}">
+                                    <i class="fas fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
@@ -41,17 +43,21 @@
             </table>
             <div class="d-flex justify-content-center">
                 <ul class="pagination">
-                    {% for page_num in pagination.iter_pages() %}
-                        {% if page_num %}
-                            {% if page_num != pagination.page %}
-                                <li class="page-item"><a class="page-link" href="{{ url_for('pacientes', page=page_num) }}">{{ page_num }}</a></li>
-                            {% else %}
-                                <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
-                            {% endif %}
-                        {% else %}
-                            <li class="page-item disabled"><span class="page-link">...</span></li>
-                        {% endif %}
+                    {% if pacientes.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('pacientes.listar_consultas', page=pacientes.prev_num) }}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in pacientes.iter_pages() %}
+                        <li class="page-item {% if page_num == pacientes.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('pacientes.listar_consultas', page=page_num) }}">{{ page_num }}</a>
+                        </li>
                     {% endfor %}
+                    {% if pacientes.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('pacientes.listar_consultas', page=pacientes.next_num) }}">Próxima</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

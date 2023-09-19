@@ -45,6 +45,16 @@ class Patient(db.Model):
         self.sexo = sexo
         self.telefone = telefone
         self.email = email
+    
+    def to_dict(self):
+        return {
+            'cpf': self.cpf,
+            'nome_completo': self.nome_completo,
+            'data_nascimento': self.data_nascimento,
+            'sexo': self.sexo,
+            'telefone': self.telefone,
+            'email': self.email
+        }
 
 class Consultation(db.Model):
     __tablename__ = 'consultation'

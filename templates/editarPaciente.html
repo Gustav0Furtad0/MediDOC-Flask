@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Editar Paciente</h2>
+    {% if message %}
+            <div class="alert alert-danger text-center">
+                {{ message }}
+            </div>
+    {% endif %}
+    <form method="POST" action="/editarPaciente/{{ paciente.cpf }}">
+        <div class="form-group mb-3">
+            <label for="nome_completo">Nome Completo</label>
+            <input value="{{ paciente.nome_completo }}" type="text" class="form-control" id="nome_completo" name="nome_completo" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="cpf">CPF</label>
+            <input value="{{ paciente.cpf }}" type="text" class="form-control" id="cpf" name="cpf" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="data_nascimento">Data de Nascimento</label>
+            <input value="{{ paciente.data_nascimento }}" type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="sexo">Sexo</label>
+            <select class="form-control" id="sexo" name="sexo" required>
+                {% if paciente.sexo == "M" %}
+                    <option selected value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                {% else %}
+                    <option selected value="F">Masculino</option>
+                    <option value="M">Feminino</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="telefone">Telefone</label>
+            <input value="{{ paciente.telefone }}" type="text" class="form-control" id="telefone" name="telefone">
+        </div>
+        <div class="form-group mb-3">
+            <label for="email">E-mail</label>
+            <input value="{{ paciente.email }}" type="email" class="form-control" id="email" name="email">   
+        </div>
+        <button type="submit" class="btn btn-primary">Editar</button>
+    </form>
+</div>
+{% endblock %}

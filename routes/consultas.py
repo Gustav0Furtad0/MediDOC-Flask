@@ -13,7 +13,7 @@ def listar_consultas():
     return render_template('consultas.html', consultas=consultas)
 
 
-@consultas_bp.route('/registrar consulta', methods=['GET'])
+@consultas_bp.route('/registrarConsulta', methods=['GET'])
 def registrar_consulta():
     # Implemente a lógica para registrar novas consultas aqui
     # Pode ser necessário criar um formulário para coletar informações da consulta

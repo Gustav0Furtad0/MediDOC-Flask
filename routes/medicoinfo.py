@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, redirect, request
 from models import Doctor
 from datetime import datetime
 from database import db
+from werkzeug.security import check_password_hash, generate_password_hash
 
 medicoinfo_bp = Blueprint('medicoinfo', __name__, template_folder='templates')
 
@@ -10,16 +11,17 @@ def medicoinfo():
     if not session.get("crm"):
         return redirect('/login')
 
-    doctor = Doctor.query.filter_by(crm=session.get('crm')).first()
-    doctor = doctor.to_dict()
+    doctor = Doctor.query.filter_by(crm=session.get('crm')).first().to_dict()
     
     return render_template('medicoinfo.html', doctor=doctor)
 
 @medicoinfo_bp.route('/editarmedico', methods=['GET', 'POST'])
 def editarmedico():
+    if not session.get("crm"):
+        return redirect('/login')
+    
     doctor = Doctor.query.filter_by(crm=session.get('crm')).first()
     
-
     if request.method == 'GET':
         doctor = doctor.to_dict()
         return render_template('editarmedico.html', doctor=doctor)
@@ -40,6 +42,10 @@ def editarmedico():
         if 'data_inscricao_crm' not in request.form and request.form['data_inscricao_crm'] == '':
             return render_template('editarmedico.html', message='Data de inscrição no CRM necessária!')
         doctor.data_inscricao_crm = datetime.strptime(request.form['data_inscricao_crm'], '%Y-%m-%d')
+        
+        if 'senha' not in request.form and request.form['senha'] == '':
+            return render_template('editarmedico.html', message='Senha necessária!')
+        doctor.senha = generate_password_hash(request.form['senha'])
         
         db.session.commit()
         

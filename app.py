@@ -1,12 +1,18 @@
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 from flask import Flask, redirect
 from flask_migrate import Migrate
 from database import db
 from flask_bootstrap import Bootstrap5
 from flask_session import Session
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
@@ -18,7 +24,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Register blueprints
-from routes import login, registro, bemVindo, medicoinfo, editarmedico, consultas
+from routes import login, registro, bemVindo, medicoinfo, consultas
 app.register_blueprint(login.login_bp)
 app.register_blueprint(registro.register_bp)
 app.register_blueprint(bemVindo.bemVindo_bp)
@@ -31,4 +37,4 @@ migrate = Migrate(app, db)
 def index():
     return redirect("/login", code=302)
 
-app.run(debug=True, use_reloader=True)
+app.run(debug=os.environ.get("DEBUG"), use_reloader=True, port=os.environ.get("PORT"))

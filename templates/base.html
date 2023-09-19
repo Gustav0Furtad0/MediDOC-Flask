@@ -10,15 +10,19 @@
         {% endblock %}
 
         <title>MediDOC</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
         {% block navbar %}
         <nav class="navbar text-bg-primary p-3">
-            <div class="container-fluid">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
                 <span class="navbar-brand mb-0 h1 fs-1 text-light mx-auto">MediDOC</span>
+
+                <a class="btn btn-light" href="/logout" id="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
-            
         </nav>
         {% endblock %}
 

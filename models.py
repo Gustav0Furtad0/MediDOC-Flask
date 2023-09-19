@@ -38,16 +38,11 @@ class Patient(db.Model):
 
     consultas = db.relationship('Consultation', backref='paciente')
     
-    def __init__(self, nome_completo, cpf, data_nascimento, sexo, numero, complemento, cidade, estado, cep, telefone, email):
+    def __init__(self, nome_completo, cpf, data_nascimento, sexo, telefone, email):
         self.nome_completo = nome_completo
         self.cpf = cpf
         self.data_nascimento = data_nascimento
         self.sexo = sexo
-        self.numero = numero
-        self.complemento = complemento
-        self.cidade = cidade
-        self.estado = estado
-        self.cep = cep
         self.telefone = telefone
         self.email = email
 

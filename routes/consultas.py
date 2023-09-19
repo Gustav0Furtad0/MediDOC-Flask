@@ -18,4 +18,4 @@ def registrar_consulta():
     # Implemente a lógica para registrar novas consultas aqui
     # Pode ser necessário criar um formulário para coletar informações da consulta
     # Após o registro, redirecione o usuário de volta para a página de consultas
-    return render_template('registrar_consulta.html')
+    return render_template('registrarConsulta.html')

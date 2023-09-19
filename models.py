@@ -61,7 +61,23 @@ class Consultation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     data_consulta = db.Column(db.Date, nullable=False)
     descricao_consulta = db.Column(db.Text)
-    prescricao = db.Column(db.Text)
     diagnostico = db.Column(db.Text)
     medico_id = db.Column(db.Integer, db.ForeignKey('doctor.cpf'))
     paciente_id = db.Column(db.Integer, db.ForeignKey('patient.cpf'))
+    
+    def __init__(self, data_consulta, descricao_consulta, prescricao, diagnostico, medico_id, paciente_id):
+        self.data_consulta = data_consulta
+        self.descricao_consulta = descricao_consulta
+        self.diagnostico = diagnostico
+        self.medico_id = medico_id
+        self.paciente_id = paciente_id
+        
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'data_consulta': self.data_consulta,
+            'descricao_consulta': self.descricao_consulta,
+            'diagnostico': self.diagnostico,
+            'medico_id': self.medico_id,
+            'paciente_id': self.paciente_id
+        }

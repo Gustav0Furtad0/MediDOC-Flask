@@ -24,12 +24,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Register blueprints
-from routes import login, bemVindo, medicoinfo, consultas, pacientes
+from routes import login, bemVindo, medicoinfo, consultas, pacientes, verifica
 app.register_blueprint(login.login_bp)
 app.register_blueprint(bemVindo.bemVindo_bp)
 app.register_blueprint(medicoinfo.medicoinfo_bp)
 app.register_blueprint(consultas.consultas_bp)
 app.register_blueprint(pacientes.pacientes_bp)
+app.register_blueprint(verifica.verifica_bp)
 
 migrate = Migrate(app, db)
 

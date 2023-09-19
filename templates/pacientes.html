@@ -27,9 +27,9 @@
                             <td>{{ paciente.nome_completo }}</td>
                             <td>{{ paciente.sexo }}</td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="/contatoModal/{{ paciente.cpf }}">
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#{{ paciente.cpf }}">
                                     <i class="fas fa-envelope"></i>
-                                </a>
+                                </button>
                                 <a class="btn btn-info btn-sm" href="/prontuario/{{ paciente.cpf }}">
                                     <i class="fas fa-book"></i>
                                 </a>
@@ -66,4 +66,24 @@
         </div>
     </div>
 </div>
+
+{% for paciente in pacientes %}
+    <div class="modal fade" id="{{ paciente.cpf }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Informações de Contato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>E-mail: {{ paciente.email }}</p>
+                    <p>Telefone: {{ paciente.telefone }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}

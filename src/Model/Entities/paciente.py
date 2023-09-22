@@ -64,26 +64,36 @@ class Paciente(db.Model):
             telefone {str} -- Telefone do paciente (default: {False})
             email {str} -- Email do paciente (default: {False})
         '''
-        if nome_completo:
-            self.nome_completo = nome_completo
-        if data_nascimento:
-            self.data_nascimento = data_nascimento
-        if sexo:
-            self.sexo = sexo
-        if telefone:
-            self.telefone = telefone
-        if email:
-            self.email = email
-        
-        db.session.commit()
+        try:
+            if nome_completo:
+                self.nome_completo = nome_completo
+            if data_nascimento:
+                self.data_nascimento = data_nascimento
+            if sexo:
+                self.sexo = sexo
+            if telefone:
+                self.telefone = telefone
+            if email:
+                self.email = email
+            
+            db.session.commit()
+            return True, 'Paciente atualizado com sucesso!'
+            
+        except:
+            return False, 'Erro ao atualizar paciente!'        
     
     def deletar_paciente(self):
         ## Metodo para deletar paciente
         '''
         Deleta o paciente do banco de dados
         '''
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+            return True, 'Paciente deletado com sucesso!'
+            
+        except:
+            return False, 'Erro ao deletar paciente!'
     
     ##* Metodos estaticos
     @staticmethod
@@ -157,7 +167,7 @@ class Paciente(db.Model):
         return Paciente.query.filter_by(telefone=telefone).all()
     
     @staticmethod
-    def add_paciente(nome_completo, cpf, data_nascimento, sexo, telefone, email):
+    def adicionar_paciente(nome_completo, cpf, data_nascimento, sexo, telefone, email):
         ## Metodo para adicionar paciente
         '''
         Adiciona um paciente ao banco de dados

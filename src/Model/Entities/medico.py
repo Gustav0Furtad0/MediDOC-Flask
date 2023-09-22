@@ -58,22 +58,27 @@ class Medico(db.Model):
             data_inscricao_crm {date} -- Data de inscrição no CRM do médico (default: {False})
             senha {str} -- Senha do médico (default: {False})
         '''
-        if cpf:
-            self.__cpf = cpf
-        
-        if nome_completo:
-            self.__nome_completo = nome_completo
-        
-        if crm:
-            self.__crm = crm
+        try:
+            if cpf:
+                self.__cpf = cpf
             
-        if data_inscricao_crm:
-            self.__data_inscricao_crm = data_inscricao_crm
+            if nome_completo:
+                self.__nome_completo = nome_completo
+            
+            if crm:
+                self.__crm = crm
+                
+            if data_inscricao_crm:
+                self.__data_inscricao_crm = data_inscricao_crm
+            
+            if senha:
+                self.__senha = senha
+            
+            db.session.commit()
+            return True, 'Médico atualizado com sucesso!'
         
-        if senha:
-            self.__senha = senha
-        
-        db.session.commit()
+        except:
+            return False, 'Erro ao atualizar médico!'
     
     def verificar_senha(self, senha):
     ## Metodo para verificar senha
@@ -92,8 +97,13 @@ class Medico(db.Model):
         '''
         Deleta o médico do banco de dados
         '''
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+            return True, 'Médico deletado com sucesso!'
+        
+        except:
+            return False, 'Erro ao deletar médico!'
     
     ##* Métodos estáticos
     @staticmethod

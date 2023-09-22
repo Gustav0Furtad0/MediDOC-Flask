@@ -1,5 +1,5 @@
 from flask import Blueprint, session
-from models import Doctor, Patient
+from src.model.models import Doctor, Patient
 
 
 verifica_bp = Blueprint('verifica', __name__, template_folder='templates')

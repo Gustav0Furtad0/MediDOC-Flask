@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, request
-from models import Doctor
+from src.model.models import Doctor
 from datetime import datetime
-from database import db
+from src.Model.database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 medicoinfo_bp = Blueprint('medicoinfo', __name__, template_folder='templates')

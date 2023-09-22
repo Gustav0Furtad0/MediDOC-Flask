@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, session, url_for
-from models import Doctor
+from src.Model.Entities.medico import Medico
 from werkzeug.security import check_password_hash, generate_password_hash
-from database import db
+from src.Model.database import db
 from datetime import datetime
 
 login_bp = Blueprint('login', __name__)
@@ -12,16 +12,16 @@ def login():
         crm = request.form.get('crm')
         senha = request.form.get('senha')
         
-        doctor = Doctor.query.filter_by(crm=crm).first()
+        medico = Medico.buscar_medico_crm(crm)
         
-        if doctor is None:
+        if medico is None:
             return render_template('login.html', message='CRM inválido ou não cadastrado!'), 400
         
-        if check_password_hash(doctor.senha, senha) == False:
+        if not medico.verificar_senha(senha):
             return render_template('login.html', message='Senha incorreta!'), 400
         
         session['crm'] = crm
-        session['doctor'] = doctor
+        session['medico'] = medico
         
         return redirect('/bemvindo')
 
@@ -59,7 +59,7 @@ def registro():
         
         data_inscricao_crm = datetime.strptime(data_inscricao_crm_str, '%Y-%m-%d').date()
 
-        novo_medico = Doctor(nome_completo=nome_completo, crm=crm, cpf=cpf, data_inscricao_crm=data_inscricao_crm, senha=senha)
+        novo_medico = Medico(nome_completo=nome_completo, crm=crm, cpf=cpf, data_inscricao_crm=data_inscricao_crm, senha=senha)
         
         db.session.add(novo_medico)
         db.session.commit()
@@ -71,5 +71,5 @@ def registro():
 @login_bp.route('/logout')
 def logout():
     session.pop('crm', None)
-    session.pop('doctor', None)
+    session.pop('medico', None)
     return redirect(url_for('login.login'))

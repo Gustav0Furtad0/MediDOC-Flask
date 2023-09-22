@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect
-from models import Consultation
+from src.model.models import Consultation
 
 consultas_bp = Blueprint('consultas', __name__, template_folder='templates')
 

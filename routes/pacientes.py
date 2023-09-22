@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from models import Patient
+from src.model.models import Patient
 from flask_paginate import Pagination, get_page_parameter
-from database import db
+from src.Model.database import db
 from datetime import datetime
 
 pacientes_bp = Blueprint('pacientes', __name__, template_folder='templates')

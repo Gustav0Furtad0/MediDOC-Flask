@@ -44,7 +44,7 @@ class Paciente(db.Model):
             'email': self.email
         }
     
-    def get_consultas(self):
+    def buscar_consultas(self):
         ## Metodo para retornar consultas do medico
         '''
         Retorna as consultas do médico

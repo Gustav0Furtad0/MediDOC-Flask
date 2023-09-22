@@ -38,7 +38,7 @@ class Medico(db.Model):
             'crm': self.__crm,
             'data_inscricao_crm': self.__data_inscricao_crm,
         }
-    def get_consultas(self):
+    def buscar_consultas(self):
     ## Metodo para retornar consultas do medico
         '''
         Retorna as consultas do médico

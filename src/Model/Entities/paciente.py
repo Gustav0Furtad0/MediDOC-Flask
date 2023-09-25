@@ -66,6 +66,7 @@ class Paciente(db.Model):
             email {str} -- Email do paciente (default: {False})
         '''
         try:
+            db.session.begin()
             if nome_completo:
                 self.nome_completo = nome_completo
             if data_nascimento:
@@ -81,6 +82,7 @@ class Paciente(db.Model):
             return True, 'Paciente atualizado com sucesso!'
             
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao atualizar paciente!'        
     
     def deletar_paciente(self):
@@ -89,11 +91,13 @@ class Paciente(db.Model):
         Deleta o paciente do banco de dados
         '''
         try:
+            db.session.begin()
             db.session.delete(self)
             db.session.commit()
             return True, 'Paciente deletado com sucesso!'
             
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao deletar paciente!'
     
     ##* Metodos estaticos
@@ -199,6 +203,7 @@ class Paciente(db.Model):
             email {str} -- Email do paciente
         '''
         try:
+            db.session.begin()
             paciente = Paciente.query.filter_by(cpf=cpf).first()
             if paciente:
                 raise Exception('CPF já cadastrado!')
@@ -209,6 +214,7 @@ class Paciente(db.Model):
             
             return True, 'Paciente cadastrado com sucesso!'
         except:
+            db.session.rollback()
             return False, 'Erro ao cadastrar paciente!'
         
     

@@ -39,6 +39,7 @@ class Medico(db.Model):
             'crm': self.__crm,
             'data_inscricao_crm': self.__data_inscricao_crm,
         }
+    
     def buscar_consultas(self):
     ## Metodo para retornar consultas do medico
         '''
@@ -60,6 +61,8 @@ class Medico(db.Model):
             senha {str} -- Senha do médico (default: {False})
         '''
         try:
+            
+            db.session.begin()
             if cpf:
                 self.__cpf = cpf
             
@@ -79,6 +82,7 @@ class Medico(db.Model):
             return True, 'Médico atualizado com sucesso!'
         
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao atualizar médico!'
     
     def verificar_senha(self, senha):
@@ -99,11 +103,13 @@ class Medico(db.Model):
         Deleta o médico do banco de dados
         '''
         try:
+            db.session.begin()
             db.session.delete(self)
             db.session.commit()
             return True, 'Médico deletado com sucesso!'
         
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao deletar médico!'
     
     ##* Metodos estaticos
@@ -125,6 +131,7 @@ class Medico(db.Model):
             str -- Mensagem de erro
         '''
         try:
+            db.session.begin()
             medico = Medico.query.filter_by(crm=crm).first()
             if medico:
                 raise Exception('CRM já cadastrado!')
@@ -133,6 +140,7 @@ class Medico(db.Model):
             db.session.commit()
             return True, 'Médico adicionado com sucesso!'
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao adicionar médico!'
     
     @staticmethod

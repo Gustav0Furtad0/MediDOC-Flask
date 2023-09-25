@@ -49,10 +49,12 @@ class Consulta(db.Model):
         Deleta a consulta do banco de dados
         '''
         try:
+            db.session.begin()
             db.session.delete(self)
             db.session.commit()
             
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao deletar consulta'
             
     def alterar_consulta(self, data_consulta=False, descricao_consulta=False, diagnostico=False, medico_cpf=False, paciente_cpf=False):
@@ -72,6 +74,7 @@ class Consulta(db.Model):
             str -- Mensagem de erro
         '''
         try:
+            db.session.begin()
             if data_consulta:
                 self.__data_consulta = data_consulta
             if descricao_consulta:
@@ -86,6 +89,7 @@ class Consulta(db.Model):
             return True, 'Consulta alterada com sucesso!'
 
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao alterar consulta'
     
     ##* Metodos estaticos
@@ -152,11 +156,13 @@ class Consulta(db.Model):
             str -- Mensagem de erro
         '''
         try:
+            db.session.begin()
             nova_consulta = Consulta(data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf)
             db.session.add(nova_consulta)
             db.session.commit()
             return True, 'Consulta adicionada com sucesso!'
         except SQLAlchemyError:
+            db.session.rollback()
             return False, 'Erro ao adicionar consulta'
         
     

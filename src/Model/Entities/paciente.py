@@ -1,4 +1,5 @@
 from src.Model.database import db
+from flask_sqlalchemy import SQLAlchemyError
 
 class Paciente(db.Model):
     ##* Atributos da tebela "paciente"
@@ -79,7 +80,7 @@ class Paciente(db.Model):
             db.session.commit()
             return True, 'Paciente atualizado com sucesso!'
             
-        except:
+        except SQLAlchemyError:
             return False, 'Erro ao atualizar paciente!'        
     
     def deletar_paciente(self):

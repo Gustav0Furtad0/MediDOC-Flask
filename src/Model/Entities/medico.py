@@ -1,5 +1,6 @@
 from src.Model.database import db
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_sqlalchemy import SQLAlchemyError
 
 class Medico(db.Model):
     ##* Atributos da tabela "medicos"
@@ -77,7 +78,7 @@ class Medico(db.Model):
             db.session.commit()
             return True, 'Médico atualizado com sucesso!'
         
-        except:
+        except SQLAlchemyError:
             return False, 'Erro ao atualizar médico!'
     
     def verificar_senha(self, senha):
@@ -102,7 +103,7 @@ class Medico(db.Model):
             db.session.commit()
             return True, 'Médico deletado com sucesso!'
         
-        except:
+        except SQLAlchemyError:
             return False, 'Erro ao deletar médico!'
     
     ##* Metodos estaticos
@@ -131,7 +132,7 @@ class Medico(db.Model):
             db.session.add(medico)
             db.session.commit()
             return True, 'Médico adicionado com sucesso!'
-        except:
+        except SQLAlchemyError:
             return False, 'Erro ao adicionar médico!'
     
     @staticmethod
@@ -145,7 +146,9 @@ class Medico(db.Model):
             Medico -- Objeto do médico encontrado
             bool -- False se o médico não for encontrado
         '''
-        medico = Medico.query.filter_by(crm=crm).first()
-        if medico:
-            return medico
-        return False
+        try:
+            medico = Medico.query.filter_by(crm=crm).first()
+            if medico:
+                return medico
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar médico!'

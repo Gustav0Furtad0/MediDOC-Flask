@@ -4,21 +4,21 @@ from flask_sqlalchemy import SQLAlchemyError
 
 class Medico(db.Model):
     ##* Atributos da tabela "medicos"
-    __tablename__ = 'medicos'
-    __cpf = db.Column(db.Integer, nullable=False, unique=True, primary_key=True)
-    __nome_completo = db.Column(db.String(255), nullable=False)
-    __crm = db.Column(db.Integer, nullable=False, unique=True)
-    __data_inscricao_crm = db.Column(db.Date, nullable=False)
-    __senha = db.Column(db.String(50), nullable=False)
-    __consultas = db.relationship('Consulta', backref='medico')
+    __tablename__ = 'medico'
+    cpf = db.Column(db.Integer, nullable=False, unique=True, primary_key=True)
+    nome_completo = db.Column(db.String(255), nullable=False)
+    crm = db.Column(db.Integer, nullable=False, unique=True)
+    data_inscricao_crm = db.Column(db.Date, nullable=False)
+    senha = db.Column(db.String(50), nullable=False)
+    consultas = db.relationship('Consulta', backref='medico')
     
     def __init__(self, nome_completo, crm, cpf, data_inscricao_crm, senha):
     ## Metodo de inicialização da classe
-        self.__nome_completo = nome_completo
-        self.__crm = crm
-        self.__cpf = cpf
-        self.__data_inscricao_crm = data_inscricao_crm
-        self.__senha = generate_password_hash(senha)
+        self.nome_completo = nome_completo
+        self.crm = crm
+        self.cpf = cpf
+        self.data_inscricao_crm = data_inscricao_crm
+        self.senha = generate_password_hash(senha)
     
     def to_dict(self):
     ## Metodo para retornar os dados do medico em um dicionario
@@ -34,10 +34,10 @@ class Medico(db.Model):
             }
         '''
         return {
-            'cpf': self.__cpf,
-            'nome_completo': self.__nome_completo,
-            'crm': self.__crm,
-            'data_inscricao_crm': self.__data_inscricao_crm,
+            'cpf': self.cpf,
+            'nome_completo': self.nome_completo,
+            'crm': self.crm,
+            'data_inscricao_crm': self.data_inscricao_crm,
         }
     
     def buscar_consultas(self):
@@ -47,7 +47,7 @@ class Medico(db.Model):
         Returns:
             list -- Lista com as consultas do médico
         '''
-        return self.__consultas
+        return self.consultas
     
     def atualizar_medico(self, cpf=False, nome_completo=False, crm=False, data_inscricao_crm=False, senha=False):
     ## Metodo para atualizar medico
@@ -64,19 +64,19 @@ class Medico(db.Model):
             
             db.session.begin()
             if cpf:
-                self.__cpf = cpf
+                self.cpf = cpf
             
             if nome_completo:
-                self.__nome_completo = nome_completo
+                self.nome_completo = nome_completo
             
             if crm:
-                self.__crm = crm
+                self.crm = crm
                 
             if data_inscricao_crm:
-                self.__data_inscricao_crm = data_inscricao_crm
+                self.data_inscricao_crm = data_inscricao_crm
             
             if senha:
-                self.__senha = senha
+                self.senha = senha
             
             db.session.commit()
             return True, 'Médico atualizado com sucesso!'
@@ -95,7 +95,7 @@ class Medico(db.Model):
             bool -- True se a senha informada for a senha do médico
             bool -- False se a senha informada não for a senha do médico
         '''
-        return check_password_hash(self.__senha, senha)
+        return check_password_hash(self.senha, senha)
     
     def deletar_medico(self):
         ## Metodo para deletar medico

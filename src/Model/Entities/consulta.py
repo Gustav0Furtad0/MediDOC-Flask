@@ -1,23 +1,23 @@
 from src.Model.database import db
-from flask_sqlalchemy import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError
 
 class Consulta(db.Model):
     ##* Atributos da tabela "consulta"
     __tablename__ = 'consulta'
-    __id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    __data_consulta = db.Column(db.Date, nullable=False)
-    __descricao_consulta = db.Column(db.Text)
-    __diagnostico = db.Column(db.Text)
-    __medico_cpf = db.Column(db.Integer, db.ForeignKey('medico.cpf'))
-    __paciente_cpf = db.Column(db.Integer, db.ForeignKey('paciente.cpf'))
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    data_consulta = db.Column(db.Date, nullable=False)
+    descricao_consulta = db.Column(db.Text)
+    diagnostico = db.Column(db.Text)
+    medico_cpf = db.Column(db.Integer, db.ForeignKey('medico.cpf'))
+    paciente_cpf = db.Column(db.Integer, db.ForeignKey('paciente.cpf'))
     
     def __init__(self, data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf):
     ## Metodo de inicializacao da classe
-        self.__data_consulta = data_consulta
-        self.__descricao_consulta = descricao_consulta
-        self.__diagnostico = diagnostico
-        self.__medico_cpf = medico_cpf
-        self.__paciente_cpf = paciente_cpf
+        self.data_consulta = data_consulta
+        self.descricao_consulta = descricao_consulta
+        self.diagnostico = diagnostico
+        self.medico_cpf = medico_cpf
+        self.paciente_cpf = paciente_cpf
         
     def to_dict(self):
         ## Metodo para retornar os dados da consulta em um dicionario
@@ -35,12 +35,12 @@ class Consulta(db.Model):
             }
         '''
         return {
-            'id': self.__id,
-            'data_consulta': self.__data_consulta,
-            'descricao_consulta': self.__descricao_consulta,
-            'diagnostico': self.__diagnostico,
-            'medico_cpf': self.__medico_cpf,
-            'paciente_cpf': self.__paciente_cpf
+            'id': self.id,
+            'data_consulta': self.data_consulta,
+            'descricao_consulta': self.descricao_consulta,
+            'diagnostico': self.diagnostico,
+            'medico_cpf': self.medico_cpf,
+            'paciente_cpf': self.paciente_cpf
         }
     
     def deletar_consulta(self):
@@ -76,15 +76,15 @@ class Consulta(db.Model):
         try:
             db.session.begin()
             if data_consulta:
-                self.__data_consulta = data_consulta
+                self.data_consulta = data_consulta
             if descricao_consulta:
-                self.__descricao_consulta = descricao_consulta
+                self.descricao_consulta = descricao_consulta
             if diagnostico:
-                self.__diagnostico = diagnostico
+                self.diagnostico = diagnostico
             if medico_cpf:
-                self.__medico_cpf = medico_cpf
+                self.medico_cpf = medico_cpf
             if paciente_cpf:
-                self.__paciente_cpf = paciente_cpf
+                self.paciente_cpf = paciente_cpf
             db.session.commit()
             return True, 'Consulta alterada com sucesso!'
 
@@ -109,7 +109,7 @@ class Consulta(db.Model):
         '''
         try:
             if id:
-                return Consulta.query.filter_by(__id=id).first()
+                return Consulta.query.filter_by(id=id).first()
         except SQLAlchemyError:
             return False, 'Erro ao buscar consulta'
     
@@ -128,12 +128,12 @@ class Consulta(db.Model):
         try:
             if medico_cpf:
                 if data_consulta:
-                    return Consulta.query.filter_by(__medico_cpf=medico_cpf, __data_consulta=data_consulta)
-                return Consulta.query.filter_by(__medico_cp=medico_cpf)
+                    return Consulta.query.filter_by(medico_cpf=medico_cpf, data_consulta=data_consulta)
+                return Consulta.query.filter_by(medico_cp=medico_cpf)
             elif paciente_cpf:
                 if data_consulta:
-                    return Consulta.query.filter_by(__paciente_cpf=paciente_cpf, __data_consulta=data_consulta)
-                return Consulta.query.filter_by(__paciente_cpf=paciente_cpf)
+                    return Consulta.query.filter_by(paciente_cpf=paciente_cpf, data_consulta=data_consulta)
+                return Consulta.query.filter_by(paciente_cpf=paciente_cpf)
         except SQLAlchemyError:
             return False, 'Erro ao buscar consultas'
         

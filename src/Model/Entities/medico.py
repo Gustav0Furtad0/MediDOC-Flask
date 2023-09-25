@@ -105,7 +105,7 @@ class Medico(db.Model):
         except:
             return False, 'Erro ao deletar médico!'
     
-    ##* Métodos estáticos
+    ##* Metodos estaticos
     @staticmethod
     def adicionar_medico(cpf, nome_completo, crm, data_inscricao_crm, senha):
         ## Metodo para cadastrar novo medico

@@ -12,7 +12,7 @@ class Paciente(db.Model):
     consultas = db.relationship('Consulta', backref='paciente')
     
     def __init__(self, nome_completo, cpf, data_nascimento, sexo, telefone, email):
-    ## Metodo de inicialização da classe
+    ## Metodo de inicializacao da classe
         self.nome_completo = nome_completo
         self.cpf = cpf
         self.data_nascimento = data_nascimento

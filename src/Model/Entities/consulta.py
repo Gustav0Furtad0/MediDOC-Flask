@@ -1,4 +1,5 @@
 from src.Model.database import db
+from flask_sqlalchemy import SQLAlchemyError
 
 class Consulta(db.Model):
     ##* Atributos da tabela "consulta"
@@ -10,13 +11,13 @@ class Consulta(db.Model):
     __medico_cpf = db.Column(db.Integer, db.ForeignKey('medico.cpf'))
     __paciente_cpf = db.Column(db.Integer, db.ForeignKey('paciente.cpf'))
     
-    def __init__(self, data_consulta, descricao_consulta, diagnostico, medico_id, paciente_id):
+    def __init__(self, data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf):
     ## Metodo de inicializacao da classe
         self.__data_consulta = data_consulta
         self.__descricao_consulta = descricao_consulta
         self.__diagnostico = diagnostico
-        self.__medico_id = medico_id
-        self.__paciente_id = paciente_id
+        self.__medico_cpf = medico_cpf
+        self.__paciente_cpf = paciente_cpf
         
     def to_dict(self):
         ## Metodo para retornar os dados da consulta em um dicionario
@@ -47,11 +48,29 @@ class Consulta(db.Model):
         '''
         Deleta a consulta do banco de dados
         '''
-        db.session.delete(self)
-        db.session.commit()
-    
-    def alterar_consulta(self, data_consulta=False, descricao_consulta=False, diagnostico=False, medico_id=False, paciente_id=False):
+        try:
+            db.session.delete(self)
+            db.session.commit()
+            
+        except SQLAlchemyError:
+            return False, 'Erro ao deletar consulta'
+            
+    def alterar_consulta(self, data_consulta=False, descricao_consulta=False, diagnostico=False, medico_cpf=False, paciente_cpf=False):
         ## Metodo para alterar consulta
+        '''
+        Altera os dados da consulta
+        
+        Arguments:
+            data_consulta {date} -- Data da consulta (default: {False})
+            descricao_consulta {str} -- Descrição da consulta (default: {False})
+            diagnostico {str} -- Diagnóstico da consulta (default: {False})
+            medico_cpf {int} -- CPF do médico (default: {False})
+            paciente_cpf {int} -- CPF do paciente (default: {False})
+            
+        Returns:
+            bool -- True se a consulta foi alterada com sucesso
+            str -- Mensagem de erro
+        '''
         try:
             if data_consulta:
                 self.__data_consulta = data_consulta
@@ -59,15 +78,15 @@ class Consulta(db.Model):
                 self.__descricao_consulta = descricao_consulta
             if diagnostico:
                 self.__diagnostico = diagnostico
-            if medico_id:
-                self.__medico_id = medico_id
-            if paciente_id:
-                self.__paciente_id = paciente_id
+            if medico_cpf:
+                self.__medico_cpf = medico_cpf
+            if paciente_cpf:
+                self.__paciente_cpf = paciente_cpf
             db.session.commit()
-            return 'Consulta alterada com sucesso', 200
+            return True, 'Consulta alterada com sucesso!'
 
-        except:
-            return 'Erro ao alterar consulta', 400
+        except SQLAlchemyError:
+            return False, 'Erro ao alterar consulta'
     
     ##* Metodos estaticos
     @staticmethod
@@ -87,28 +106,35 @@ class Consulta(db.Model):
         try:
             if id:
                 return Consulta.query.filter_by(__id=id).first()
-        except:
-            return 'Erro ao buscar consulta', 400
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar consulta'
     
     @staticmethod
-    def buscar_consultas(medico_id=False, paciente_id=False, data_consulta=False):
+    def buscar_consultas(medico_cpf=False, paciente_cpf=False, data_consulta=False):
         ## Metodo para buscar consultas
         '''
         Busca consultas no banco de dados
-        '''
-        if medico_id:
-            if data_consulta:
-                return Consulta.query.filter_by(__medico_id=medico_id, __data_consulta=data_consulta)
-            return Consulta.query.filter_by(__medico_id=medico_id)
-        elif paciente_id:
-            if data_consulta:
-                return Consulta.query.filter_by(__paciente_id=paciente_id, __data_consulta=data_consulta)
-            return Consulta.query.filter_by(__paciente_id=paciente_id)
-        else:
-            return 'Erro ao buscar consultas', 400
-    
+        Arguments:
+            data_consulta {date} -- Data da consulta
+            descricao_consulta {str} -- Descrição da consulta
+            diagnostico {str} -- Diagnóstico da consulta
+            medico_cpf {int} -- CPF do médico
+            paciente_cpf {int} -- CPF do paciente
+        ''' 
+        try:
+            if medico_cpf:
+                if data_consulta:
+                    return Consulta.query.filter_by(__medico_cpf=medico_cpf, __data_consulta=data_consulta)
+                return Consulta.query.filter_by(__medico_cp=medico_cpf)
+            elif paciente_cpf:
+                if data_consulta:
+                    return Consulta.query.filter_by(__paciente_cpf=paciente_cpf, __data_consulta=data_consulta)
+                return Consulta.query.filter_by(__paciente_cpf=paciente_cpf)
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar consultas'
+        
     @staticmethod
-    def adicionar_consulta(data_consulta, descricao_consulta, diagnostico, medico_id, paciente_id):
+    def adicionar_consulta(data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf):
         ## Metodo para adicionar consulta
         '''
         Adiciona uma nova consulta ao banco de dados
@@ -117,8 +143,8 @@ class Consulta(db.Model):
             data_consulta {date} -- Data da consulta
             descricao_consulta {str} -- Descrição da consulta
             diagnostico {str} -- Diagnóstico da consulta
-            medico_id {int} -- CPF do médico
-            paciente_id {int} -- CPF do paciente
+            medico_cpf {int} -- CPF do médico
+            paciente_cpf {int} -- CPF do paciente
             
         Returns:
             Consulta -- Objeto da consulta
@@ -126,10 +152,11 @@ class Consulta(db.Model):
             str -- Mensagem de erro
         '''
         try:
-            nova_consulta = Consulta(data_consulta, descricao_consulta, diagnostico, medico_id, paciente_id)
+            nova_consulta = Consulta(data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf)
             db.session.add(nova_consulta)
             db.session.commit()
-            return 'Consulta adicionada com sucesso', 200
-        except:
-            return 'Erro ao adicionar consulta', 400
+            return True, 'Consulta adicionada com sucesso!'
+        except SQLAlchemyError:
+            return False, 'Erro ao adicionar consulta'
+        
     

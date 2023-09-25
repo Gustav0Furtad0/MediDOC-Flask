@@ -152,3 +152,4 @@ class Medico(db.Model):
                 return medico
         except SQLAlchemyError:
             return False, 'Erro ao buscar médico!'
+    

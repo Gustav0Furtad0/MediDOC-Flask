@@ -93,7 +93,7 @@ class Paciente(db.Model):
             db.session.commit()
             return True, 'Paciente deletado com sucesso!'
             
-        except:
+        except SQLAlchemyError:
             return False, 'Erro ao deletar paciente!'
     
     ##* Metodos estaticos
@@ -107,7 +107,10 @@ class Paciente(db.Model):
         Returns:
             Paciente -- Objeto do paciente
         '''
-        return Paciente.query.filter_by(cpf=cpf).first()
+        try:
+            return Paciente.query.filter_by(cpf=cpf).first()
+        except  SQLAlchemyError:
+            return False, 'Erro ao buscar paciente!'
 
     @staticmethod
     def buscar_pacientes():
@@ -117,7 +120,10 @@ class Paciente(db.Model):
         Returns:
             list -- Lista com todos os pacientes cadastrados
         '''
-        return Paciente.query.all()
+        try:
+            return Paciente.query.all()
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar pacientes!'
     
     @staticmethod
     def buscar_pacientes_por_nome(nome):
@@ -129,7 +135,10 @@ class Paciente(db.Model):
         Returns:
             list -- Lista com os pacientes encontrados
         '''
-        return Paciente.query.filter(Paciente.nome_completo.like(f'%{nome}%')).all()
+        try:
+            return Paciente.query.filter(Paciente.nome_completo.like(f'%{nome}%')).all()
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar pacientes!'
     
     @staticmethod
     def buscar_pacientes_por_data_nascimento(data_nascimento):
@@ -141,7 +150,10 @@ class Paciente(db.Model):
         Returns:
             list -- Lista com os pacientes encontrados
         '''
-        return Paciente.query.filter_by(data_nascimento=data_nascimento).all()
+        try:
+            return Paciente.query.filter_by(data_nascimento=data_nascimento).all()
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar pacientes!'
     
     @staticmethod
     def buscar_pacientes_por_sexo(sexo):
@@ -153,8 +165,11 @@ class Paciente(db.Model):
         Returns:
             list -- Lista com os pacientes encontrados
         '''
-        return Paciente.query.filter_by(sexo=sexo).all()
-    
+        try:
+            return Paciente.query.filter_by(sexo=sexo).all()
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar pacientes!'
+        
     @staticmethod
     def buscar_pacientes_por_telefone(telefone):
         ## Metodo para retornar pacientes pelo telefone
@@ -165,7 +180,10 @@ class Paciente(db.Model):
         Returns:
             list -- Lista com os pacientes encontrados
         '''
-        return Paciente.query.filter_by(telefone=telefone).all()
+        try:
+            return Paciente.query.filter_by(telefone=telefone).all()
+        except SQLAlchemyError:
+            return False, 'Erro ao buscar pacientes!'
     
     @staticmethod
     def adicionar_paciente(nome_completo, cpf, data_nascimento, sexo, telefone, email):

@@ -204,7 +204,6 @@ class Paciente(db.Model):
             email {str} -- Email do paciente
         '''
         # try:
-        db.session.begin()
         paciente = Paciente.query.filter_by(cpf=cpf).first()
         if paciente:
             raise Exception('CPF já cadastrado!')

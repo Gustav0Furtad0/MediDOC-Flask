@@ -26,18 +26,11 @@ db.init_app(app)
 
 migrate = Migrate(app, db)
 
-from src.Model.Entities.paciente import Paciente
-from datetime import date
-def adicionar_paciente():
-    with app.app_context():
-        # using datetime
-        data_nascimento = date(1997, 2, 3)
-        paciente = Paciente('João da Silva', '12345678901', data_nascimento, 'M', '123456789', 'teste@teste.com')
-        db.session.commit()
-
 @app.route('/adicionar_paciente')
 def rota_adicionar_paciente():
-    adicionar_paciente()
-    return 'Paciente adicionado com sucesso'
+    with app.app_context():
+        db.create_all()
+    
+    return redirect('/')
 
 app.run(debug=os.environ.get("DEBUG"), use_reloader=True, port=os.environ.get("PORT"))

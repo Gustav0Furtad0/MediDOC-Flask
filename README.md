@@ -29,7 +29,7 @@ cd medidoc
 1. Crie um ambiente virtual e instale as dependências:
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # Para Linux/Mac
 # Ou
 venv\Scripts\activate  # Para Windows

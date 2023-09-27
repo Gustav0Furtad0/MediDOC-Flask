@@ -49,6 +49,26 @@ DEBUG=True  # Ative o modo de depuração em desenvolvimento
 
 1. Crie o banco de dados e execute as migrações:
 
+Observação: Por algum motivo ao utilizar o flask_migrate o banco de dados acaba sendo gerado com a relação incorreta entre as tabelas. Portanto até que eu encontre uma forma de resolver o problema. A instância do banco de dados é gerada da seguinte forma:
+
+```bash
+export FLASK_APP=app
+flask shell
+>>> from src.Model.database import db
+>>> from src.Model.Entities.consulta import Consulta
+>>> from src.Model.Entities.medico import Medico
+>>> from src.Model.Entities.paciente import Paciente
+>>> db.create_all()
+```
+
+Para sair do python shell digite:
+
+```bash
+exit()
+```
+
+Método o qual seria correto para gerar a instância do banco de dados utilizadno flask_migrate.
+
 ```bash
 flask db init
 flask db migrate

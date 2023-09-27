@@ -1,6 +1,5 @@
 from src.Model.database import db
 from sqlalchemy.exc import SQLAlchemyError
-from src.Model.Entities.consulta import Consulta
 
 class Paciente(db.Model):
     ##* Atributos da tebela "paciente"

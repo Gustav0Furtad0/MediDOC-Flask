@@ -8,8 +8,8 @@ class Consulta(db.Model):
     data_consulta = db.Column(db.Date, nullable=False)
     descricao_consulta = db.Column(db.Text)
     diagnostico = db.Column(db.Text)
-    medico_cpf = db.Column(db.Integer, db.ForeignKey('medico.cpf'), name='fk_medico_consulta')
-    paciente_cpf = db.Column(db.Integer, db.ForeignKey('paciente.cpf'), name='fk_paciente_consulta')
+    medico_cpf = db.Column(db.Integer, db.ForeignKey('medico.cpf'))
+    paciente_cpf = db.Column(db.Integer, db.ForeignKey('paciente.cpf'))
     
     def __init__(self, data_consulta, descricao_consulta, diagnostico, medico_cpf, paciente_cpf):
     ## Metodo de inicializacao da classe

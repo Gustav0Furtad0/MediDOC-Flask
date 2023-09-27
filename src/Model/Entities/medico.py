@@ -1,7 +1,6 @@
 from src.Model.database import db
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import SQLAlchemyError
-from src.Model.Entities.consulta import Consulta
 
 class Medico(db.Model):
     ##* Atributos da tabela "medicos"
